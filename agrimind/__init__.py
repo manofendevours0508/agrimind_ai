@@ -1,13 +1,16 @@
 from flask import Flask, jsonify, render_template, request
 from werkzeug.exceptions import HTTPException, InternalServerError
 
-from agrimind.config import DevelopmentConfig
+from agrimind.config import DevelopmentConfig, ProductionConfig
 
 
 def create_app(config_object=DevelopmentConfig):
     """Create and configure an AgriMind AI Flask application."""
     app = Flask(__name__)
     app.config.from_object(config_object)
+
+    if config_object is ProductionConfig:
+        ProductionConfig.validate()
 
     from agrimind.routes.api import api_bp
     from agrimind.routes.main import main_bp
@@ -25,7 +28,10 @@ def create_app(config_object=DevelopmentConfig):
 
     @app.errorhandler(InternalServerError)
     def handle_internal_error(error):
-        app.logger.error("Unhandled application error", exc_info=error.original_exception)
+        app.logger.error(
+            "Unhandled application error",
+            exc_info=error.original_exception
+        )
         if request.path.startswith("/api"):
             return jsonify(error="Internal Server Error"), 500
         return render_template("500.html"), 500

@@ -1,4 +1,7 @@
+import pytest
+
 from agrimind import create_app
+from agrimind.config import DevelopmentConfig, ProductionConfig, TestingConfig
 
 
 class TestConfig:
@@ -61,3 +64,41 @@ def test_internal_api_error_does_not_expose_exception_details():
     assert response.status_code == 500
     assert response.get_json() == {"error": "Internal Server Error"}
     assert b"sensitive diagnostic detail" not in response.data
+
+
+def test_development_config_is_selected_by_default():
+    app = create_app()
+
+    assert app.config["DEBUG"] is True
+    assert app.config["TESTING"] is False
+
+
+def test_testing_config_can_be_selected():
+    app = create_app(TestingConfig)
+
+    assert app.config["DEBUG"] is False
+    assert app.config["TESTING"] is True
+
+
+def test_production_rejects_missing_secret(monkeypatch):
+    monkeypatch.setattr(ProductionConfig, "SECRET_KEY", None)
+
+    with pytest.raises(RuntimeError, match="AGRIMIND_SECRET_KEY"):
+        create_app(ProductionConfig)
+
+
+def test_production_accepts_configured_secret(monkeypatch):
+    secret = "safe-test-secret-key-with-more-than-32-characters"
+    monkeypatch.setattr(ProductionConfig, "SECRET_KEY", secret)
+
+    app = create_app(ProductionConfig)
+
+    assert app.config["SECRET_KEY"] == secret
+    assert app.config["DEBUG"] is False
+
+
+def test_production_rejects_short_secret(monkeypatch):
+    monkeypatch.setattr(ProductionConfig, "SECRET_KEY", "weak-secret")
+
+    with pytest.raises(RuntimeError, match="at least 32 characters"):
+        create_app(ProductionConfig)

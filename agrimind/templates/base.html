@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7ef">
+    <meta name="description" content="Agricultural intelligence, grounded in evidence and built for the people who grow our future.">
+    <title>{% block title %}AgriMind AI — Grow with insight{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="{{ url_for('main.home') }}" aria-label="AgriMind AI home">
+        <span class="brand-mark" aria-hidden="true">a<span>i</span></span>
+        <span>AgriMind <strong>AI</strong></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span></span><span></span>
+      </button>
+      <nav class="primary-nav" id="primary-nav" aria-label="Main navigation">
+        <a href="#approach">Our approach</a>
+        <a href="#assistant">AI assistant</a>
+        <a class="nav-cta" href="#assistant">Explore the platform <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <footer class="site-footer">
+      <a class="brand brand-footer" href="{{ url_for('main.home') }}">
+        <span class="brand-mark" aria-hidden="true">a<span>i</span></span>
+        <span>AgriMind <strong>AI</strong></span>
+      </a>
+      <p>Thoughtful technology for a more resilient food system.</p>
+      <span class="footer-note">Built for the people who grow our future.</span>
+    </footer>
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+  </body>
+</html>

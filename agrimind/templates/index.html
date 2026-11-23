@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero" id="approach">
+  <div class="hero-copy">
+    <p class="eyebrow"><span class="eyebrow-dot"></span> A clearer view of agriculture</p>
+    <h1>Better questions.<br><span>Healthier harvests.</span></h1>
+    <p class="hero-description">
+      Agricultural knowledge is growing every day. AgriMind AI is being built
+      to help growers and researchers find the signal, understand the data, and
+      make more informed decisions.
+    </p>
+    <a class="button button-primary" href="#assistant">Meet your AI research companion <span aria-hidden="true">→</span></a>
+    <div class="hero-proof"><span class="proof-icon" aria-hidden="true">✳</span> Evidence-minded. Grower-focused. Built to learn.</div>
+  </div>
+  <div class="hero-art" role="img" aria-label="Illustration of flourishing crops in a sunrise field">
+    <div class="sun"></div>
+    <div class="art-label"><span class="live-dot"></span> Growing knowledge, together</div>
+    <div class="field field-back"></div>
+    <div class="field field-mid"></div>
+    <div class="field field-front"></div>
+    <div class="plant plant-one"><i></i><i></i><b></b></div>
+    <div class="plant plant-two"><i></i><i></i><b></b></div>
+    <div class="plant plant-three"><i></i><i></i><b></b></div>
+    <div class="art-caption"><span>01</span> Knowledge rooted in the field</div>
+  </div>
+</section>
+
+<section class="approach-strip" aria-label="Platform principles">
+  <div><span class="principle-number">01</span><p><strong>Ask freely</strong><br>Start with the question that matters to you.</p></div>
+  <div><span class="principle-number">02</span><p><strong>Explore evidence</strong><br>Bring agricultural research closer to practice.</p></div>
+  <div><span class="principle-number">03</span><p><strong>See the whole field</strong><br>Make sense of data, patterns, and context.</p></div>
+</section>
+
+<section class="assistant-section" id="assistant">
+  <div class="section-heading">
+    <p class="eyebrow">A new kind of fieldwork</p>
+    <h2>Curiosity is a good place to start.</h2>
+    <p>Open-ended agricultural questions deserve thoughtful, evidence-led exploration.</p>
+  </div>
+  <div class="assistant-card">
+    <div class="assistant-topline">
+      <div class="assistant-avatar" aria-hidden="true">a<span>i</span></div>
+      <div><strong>AgriMind assistant</strong><span class="assistant-status"><i></i> Foundation in progress</span></div>
+      <span class="beta-label">DAY 01</span>
+    </div>
+    <div class="assistant-welcome">
+      <span class="welcome-spark" aria-hidden="true">✳</span>
+      <div>
+        <strong>Good questions grow good ideas.</strong>
+        <p>We’re laying the foundation for an assistant that can help explore agricultural research and data. Its conversation capabilities will arrive in a later development milestone.</p>
+      </div>
+    </div>
+    <form class="prompt-form" aria-label="Assistant preview">
+      <label class="sr-only" for="prompt">Your agricultural question</label>
+      <input id="prompt" type="text" placeholder="The assistant isn't connected yet" disabled>
+      <button type="submit" disabled aria-label="Send question">→</button>
+    </form>
+    <p class="assistant-footnote"><span aria-hidden="true">✳</span> Interface preview — no questions are sent or stored.</p>
+  </div>
+</section>
+{% endblock %}

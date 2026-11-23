@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Page not found — AgriMind AI{% endblock %}
+
+{% block content %}
+<section class="error-page">
+  <p class="eyebrow">A little off the beaten path</p>
+  <h1>Page not found</h1>
+  <p>That page isn't here. Let's get you back to the field.</p>
+  <a class="button button-primary" href="{{ url_for('main.home') }}">Return home <span aria-hidden="true">→</span></a>
+</section>
+{% endblock %}

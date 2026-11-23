@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Something went wrong — AgriMind AI{% endblock %}
+
+{% block content %}
+<section class="error-page">
+  <p class="eyebrow">We're tending to things</p>
+  <h1>Something went wrong</h1>
+  <p>Please try again shortly.</p>
+  <a class="button button-primary" href="{{ url_for('main.home') }}">Return home <span aria-hidden="true">→</span></a>
+</section>
+{% endblock %}

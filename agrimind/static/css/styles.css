@@ -126,3 +126,169 @@ h1, h2 { margin: 0; font-family: "Manrope", sans-serif; letter-spacing: -2.7px; 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+
+/* Day 3: Agricultural capabilities */
+
+.capabilities-section {
+  padding: 90px 7.2% 100px;
+  background: #ffffff;
+}
+
+.capability-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.capability-card {
+  min-width: 0;
+  padding: 28px 25px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fbfcf9;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.capability-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 35px #263e2910;
+}
+
+.capability-number {
+  color: #819477;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.capability-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  margin: 28px 0 20px;
+  border-radius: 12px;
+  color: var(--forest);
+  background: #edf3e5;
+  font-size: 25px;
+}
+
+.capability-card h3 {
+  margin: 0 0 12px;
+  font: 700 17px "Manrope", sans-serif;
+  letter-spacing: -.5px;
+}
+
+.capability-card p {
+  min-height: 85px;
+  margin: 0 0 22px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.capability-status {
+  display: inline-block;
+  padding: 7px 10px;
+  border-radius: 20px;
+  color: #60794c;
+  background: #edf3e5;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* Keyboard accessibility */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid #91a96d;
+  outline-offset: 4px;
+}
+
+/* Tablet layout */
+
+@media (max-width: 1000px) {
+  .hero {
+    gap: 4%;
+    padding-right: 5%;
+    padding-left: 5%;
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 5.5vw, 56px);
+  }
+
+  .capabilities-section {
+    padding-right: 5%;
+    padding-left: 5%;
+  }
+
+  .capability-grid {
+    gap: 14px;
+  }
+
+  .capability-card {
+    padding: 23px 18px;
+  }
+}
+
+/* Mobile layout */
+
+@media (max-width: 760px) {
+  .capabilities-section {
+    padding: 67px 6%;
+  }
+
+  .capability-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .capability-card {
+    padding: 24px;
+  }
+
+  .capability-icon {
+    margin-top: 20px;
+  }
+
+  .capability-card p {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero h1 {
+    font-size: 39px;
+    letter-spacing: -2px;
+  }
+
+  .hero-art {
+    min-height: 270px;
+  }
+
+  .assistant-topline {
+    gap: 8px;
+  }
+
+  .beta-label {
+    padding: 5px;
+    font-size: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .capability-card,
+  .button {
+    transition: none;
+  }
+
+  .capability-card:hover,
+  .button:hover {
+    transform: none;
+  }
+}

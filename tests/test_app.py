@@ -102,3 +102,34 @@ def test_production_rejects_short_secret(monkeypatch):
 
     with pytest.raises(RuntimeError, match="at least 32 characters"):
         create_app(ProductionConfig)
+
+
+def test_landing_page_shows_planned_capabilities():
+    response = create_app(TestConfig).test_client().get("/")
+
+    assert response.status_code == 200
+    assert b"Agricultural knowledge" in response.data
+    assert b"Dataset exploration" in response.data
+    assert b"Evidence-led insights" in response.data
+    assert b"Planned capability" in response.data
+
+
+def test_mobile_navigation_has_accessibility_attributes():
+    response = create_app(TestConfig).test_client().get("/")
+
+    assert b'class="menu-toggle"' in response.data
+    assert b'aria-expanded="false"' in response.data
+    assert b'aria-controls="primary-nav"' in response.data
+    assert b'id="primary-nav"' in response.data
+
+
+def test_frontend_assets_are_available():
+    client = create_app(TestConfig).test_client()
+
+    css_response = client.get("/static/css/styles.css")
+    js_response = client.get("/static/js/main.js")
+
+    assert css_response.status_code == 200
+    assert js_response.status_code == 200
+    assert b"capability-grid" in css_response.data
+    assert b"event.key === \"Escape\"" in js_response.data

@@ -67,3 +67,24 @@
 ### Next
 
 - Day 4: begin implementing the agricultural assistant's request and response foundation.
+
+## Day 4 — AI assistant service and chat API foundation
+
+### Completed
+
+- Created a common AI provider interface and provider-specific error type.
+- Created an assistant service to validate prompts and delegate generation.
+- Added `POST /api/chat` with JSON validation and a 2,000-character message limit.
+- Added safe handling for missing AI configuration.
+- Added specific handling for AI provider failures.
+- Added fake providers to test assistant and API behavior without requiring a real model.
+- Kept the real AI integration as a future task; no model is connected yet.
+
+### Validation
+
+- 23 automated tests passed.
+- Tested successful assistant responses, invalid prompts, missing provider configuration, oversized messages, and provider failures.
+
+### Next
+
+- Day 5: connect the first real AI provider through the provider interface.

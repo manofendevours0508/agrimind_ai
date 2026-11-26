@@ -3,6 +3,10 @@ import pytest
 from agrimind import create_app
 from agrimind.config import DevelopmentConfig, ProductionConfig, TestingConfig
 
+from agrimind.services.ai_provider import AIProvider
+from agrimind.services.ai_provider import AIProviderError
+from agrimind.services.assistant import AssistantService
+
 
 class TestConfig:
     TESTING = True
@@ -133,3 +137,118 @@ def test_frontend_assets_are_available():
     assert js_response.status_code == 200
     assert b"capability-grid" in css_response.data
     assert b"event.key === \"Escape\"" in js_response.data
+
+
+
+
+class FakeAIProvider(AIProvider):
+    """Simulates an AI provider for testing."""
+
+    def generate_response(self, prompt: str) -> str:
+        return f"AI response to: {prompt}"
+
+
+def test_assistant_sends_prompt_to_provider():
+    assistant = AssistantService(FakeAIProvider())
+
+    response = assistant.ask("Why are tomato leaves yellow?")
+
+    assert response == "AI response to: Why are tomato leaves yellow?"
+
+
+def test_assistant_removes_extra_prompt_whitespace():
+    assistant = AssistantService(FakeAIProvider())
+
+    response = assistant.ask("  How do I grow maize?  ")
+
+    assert response == "AI response to: How do I grow maize?"
+
+
+def test_assistant_rejects_empty_prompt():
+    assistant = AssistantService(FakeAIProvider())
+
+    with pytest.raises(ValueError, match="non-empty string"):
+        assistant.ask("   ")
+
+
+def test_assistant_rejects_non_string_prompt():
+    assistant = AssistantService(FakeAIProvider())
+
+    with pytest.raises(ValueError, match="non-empty string"):
+        assistant.ask(None)
+
+
+def test_chat_returns_503_without_assistant():
+    app = create_app(TestingConfig)
+    client = app.test_client()
+
+    response = client.post(
+        "/api/chat",
+        json={"message": "Why are tomato leaves yellow?"}
+    )
+
+    assert response.status_code == 503
+
+
+def test_chat_returns_response_from_assistant():
+    app = create_app(TestingConfig)
+    app.extensions["assistant_service"] = AssistantService(FakeAIProvider())
+    client = app.test_client()
+
+    response = client.post(
+        "/api/chat",
+        json={"message": "How do I grow maize?"}
+    )
+
+    assert response.status_code == 200
+    assert response.get_json()["response"] == (
+        "AI response to: How do I grow maize?"
+    )
+
+
+def test_chat_rejects_empty_message():
+    app = create_app(TestingConfig)
+    client = app.test_client()
+
+    response = client.post("/api/chat", json={"message": "   "})
+
+    assert response.status_code == 400
+
+
+def test_chat_rejects_message_over_2000_characters():
+    app = create_app(TestingConfig)
+    client = app.test_client()
+
+    response = client.post(
+        "/api/chat",
+        json={"message": "A" * 2001}
+    )
+
+    assert response.status_code == 400
+
+
+
+
+class BrokenAIProvider(AIProvider):
+    """Simulates an unavailable AI provider."""
+
+    def generate_response(self, prompt: str) -> str:
+        raise AIProviderError("Simulated provider connection failure")
+
+
+def test_chat_handles_ai_provider_failure():
+    app = create_app(TestingConfig)
+    app.extensions["assistant_service"] = AssistantService(
+        BrokenAIProvider()
+    )
+    client = app.test_client()
+
+    response = client.post(
+        "/api/chat",
+        json={"message": "Why are maize leaves yellow?"}
+    )
+
+    assert response.status_code == 503
+    assert response.get_json()["error"] == (
+        "AI provider is temporarily unavailable."
+    )

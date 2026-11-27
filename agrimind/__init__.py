@@ -12,6 +12,22 @@ def create_app(config_object=DevelopmentConfig):
     if config_object is ProductionConfig:
         ProductionConfig.validate()
 
+    # Configure Gemini only outside testing mode.
+    if not app.config.get("TESTING"):
+        from agrimind.services.ai_provider import AIProviderError
+        from agrimind.services.assistant import AssistantService
+
+        try:
+            from agrimind.services.gemini_provider import GeminiProvider
+
+            provider = GeminiProvider()
+            app.extensions["assistant_service"] = AssistantService(provider)
+
+        except AIProviderError:
+            app.logger.warning(
+                "Gemini is not configured. AI chat is unavailable."
+            )
+
     from agrimind.routes.api import api_bp
     from agrimind.routes.main import main_bp
 

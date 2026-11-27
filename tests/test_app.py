@@ -6,6 +6,7 @@ from agrimind.config import DevelopmentConfig, ProductionConfig, TestingConfig
 from agrimind.services.ai_provider import AIProvider
 from agrimind.services.ai_provider import AIProviderError
 from agrimind.services.assistant import AssistantService
+from agrimind.services.intent_classifier import IntentClassifier
 
 
 class TestConfig:
@@ -254,3 +255,25 @@ def test_chat_handles_ai_provider_failure():
     assert response.get_json()["error"] == (
         "AI provider is temporarily unavailable."
     )
+
+
+def test_classifies_data_analysis():
+    assert IntentClassifier().classify("Analyse my maize dataset") == "data_analysis"
+
+
+def test_classifies_research():
+    assert IntentClassifier().classify("Find research about fall armyworm") == "research"
+
+
+def test_classifies_general_question():
+    assert IntentClassifier().classify("What is soil pH?") == "general_question"
+
+
+def test_classifier_rejects_empty_message():
+    with pytest.raises(ValueError):
+        IntentClassifier().classify("")
+
+
+def test_classifier_rejects_non_string_message():
+    with pytest.raises(ValueError):
+        IntentClassifier().classify(None)

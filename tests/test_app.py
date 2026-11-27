@@ -153,7 +153,8 @@ def test_assistant_sends_prompt_to_provider():
 
     response = assistant.ask("Why are tomato leaves yellow?")
 
-    assert response == "AI response to: Why are tomato leaves yellow?"
+    assert "You are AgriMind AI" in response
+    assert "Farmer's question: Why are tomato leaves yellow?" in response
 
 
 def test_assistant_removes_extra_prompt_whitespace():
@@ -161,7 +162,8 @@ def test_assistant_removes_extra_prompt_whitespace():
 
     response = assistant.ask("  How do I grow maize?  ")
 
-    assert response == "AI response to: How do I grow maize?"
+    assert "You are AgriMind AI" in response
+    assert "Farmer's question: How do I grow maize?" in response
 
 
 def test_assistant_rejects_empty_prompt():
@@ -201,9 +203,9 @@ def test_chat_returns_response_from_assistant():
     )
 
     assert response.status_code == 200
-    assert response.get_json()["response"] == (
-        "AI response to: How do I grow maize?"
-    )
+    result = response.get_json()["response"]
+    assert "You are AgriMind AI" in result
+    assert "Farmer's question: How do I grow maize?" in result
 
 
 def test_chat_rejects_empty_message():
